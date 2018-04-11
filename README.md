@@ -1,6 +1,6 @@
 # FUI StoreConnect Sensor API's server injector
 
-Simple injector to populate data to a [FUI StoreConnect Sensors API server](https://github.com/StoreConnect/storeconnect-sensors-api-server)
+Simple utility tool to inject data to a [FUI StoreConnect Sensors API server](https://github.com/StoreConnect/storeconnect-sensors-api-server)
 
 ## Prerequisites
 
@@ -10,7 +10,10 @@ The [FUI StoreConnect Sensors API Client](https://github.com/StoreConnect/storec
 
 ```bash
 $ mvn clean package
-$ java -jar target/storeconnect-sensors-api-server-injector-<VERSION>-jar-with-dependencies.jar --enpoint http://storeconnect-sensors-api-server/SensorThingsService/1.0 --input file:///path/to/the/data/file.json --type insiteo
+$ java -jar target/storeconnect-sensors-api-server-injector-<VERSION>-jar-with-dependencies.jar \
+    --enpoint http://storeconnect-sensors-api-server/SensorThingsService/1.0 \
+    --input file:///path/to/the/data/file.json \
+    --type insiteo
 ```
 
 ## Available data types
@@ -59,6 +62,9 @@ An example of the Insiteo sensor observation's format is given bellow:
     }
 ]
 ```
+## How to contribute
+
+Feel free to contribute by making a `pull request` following the [contributing](./CONTRIBUTING.md) instructions.
 
 ## License
 
