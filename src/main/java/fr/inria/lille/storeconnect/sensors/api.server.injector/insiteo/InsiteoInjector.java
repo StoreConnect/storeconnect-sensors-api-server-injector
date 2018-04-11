@@ -19,11 +19,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import de.fraunhofer.iosb.ilt.sta.ServiceFailureException;
 import de.fraunhofer.iosb.ilt.sta.jackson.ObjectMapperFactory;
 import de.fraunhofer.iosb.ilt.sta.model.Datastream;
-import de.fraunhofer.iosb.ilt.sta.model.Location;
 import de.fraunhofer.iosb.ilt.sta.model.Observation;
-import de.fraunhofer.iosb.ilt.sta.model.ObservedProperty;
 import de.fraunhofer.iosb.ilt.sta.model.Sensor;
-import de.fraunhofer.iosb.ilt.sta.model.Thing;
 import de.fraunhofer.iosb.ilt.sta.model.TimeObject;
 import de.fraunhofer.iosb.ilt.sta.model.builder.SensorBuilder;
 import de.fraunhofer.iosb.ilt.sta.model.builder.api.AbstractSensorBuilder;
@@ -40,8 +37,10 @@ import fr.inria.lille.storeconnect.sensors.api.client.model.motion.builder.Motio
 import fr.inria.lille.storeconnect.sensors.api.client.model.motion.builder.MotionSubjectBuilder;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.AbstractInjector;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.InsiteoObservation;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.model.Locations;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.model.Things;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.util.LocationUtils;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.util.ObservedPropertyUtils;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.util.ThingUtils;
 import org.geojson.LngLatAlt;
 import org.geojson.Point;
 import org.slf4j.Logger;
@@ -118,54 +117,9 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
 
     @Override
     public void initEnvironment() throws ServiceFailureException {
-        initMotionObservation();
-        initUnknownLocation();
-        initUnknownThing();
-    }
-
-    protected void initMotionObservation() throws ServiceFailureException {
-        final EntityList<ObservedProperty> candidates = getSensorThingsService().observedProperties()
-                .query()
-                .filter(String.format("name eq '%s'", ObservedProperties.MOTION.getName()))
-                .list();
-        if (candidates.isEmpty()) {
-            LOGGER.info("Creating missing MOTION ObservedProperty: {}...", ObservedProperties.MOTION);
-            getSensorThingsService().create(ObservedProperties.MOTION);
-            LOGGER.info("Creating missing MOTION ObservedProperty: {}... Done.", ObservedProperties.MOTION);
-        } else {
-            ObservedProperties.MOTION.setId(candidates.iterator().next().getId());
-            LOGGER.info("Linked to existing MOTION ObservedProperty: {}", ObservedProperties.MOTION);
-        }
-    }
-
-    protected void initUnknownLocation() throws ServiceFailureException {
-        final EntityList<Location> candidates = getSensorThingsService().locations()
-                .query()
-                .filter(String.format("name eq '%s'", Locations.UNKNOWN.getName()))
-                .list();
-        if (candidates.isEmpty()) {
-            LOGGER.info("Creating missing UNKNOWN Location: {}...", Locations.UNKNOWN);
-            getSensorThingsService().create(Locations.UNKNOWN);
-            LOGGER.info("Creating missing UNKNOWN Location: {}... Done.", Locations.UNKNOWN);
-        } else {
-            Locations.UNKNOWN.setId(candidates.iterator().next().getId());
-            LOGGER.info("Linked to existing UNKNOWN Location: {}", Locations.UNKNOWN);
-        }
-    }
-
-    protected void initUnknownThing() throws ServiceFailureException {
-        final EntityList<Thing> candidates = getSensorThingsService().things()
-                .query()
-                .filter(String.format("name eq '%s'", Things.UNKNOWN.getName()))
-                .list();
-        if (candidates.isEmpty()) {
-            LOGGER.info("Creating missing UNKNOWN Thing: {}...", Things.UNKNOWN);
-            getSensorThingsService().create(Things.UNKNOWN);
-            LOGGER.info("Creating missing UNKNOWN Thing: {}... Done.", Things.UNKNOWN);
-        } else {
-            Things.UNKNOWN.setId(candidates.iterator().next().getId());
-            LOGGER.info("Linked to existing UNKNOWN Thing: {}", Things.UNKNOWN);
-        }
+        ObservedPropertyUtils.linkOrCreateMotionObservedProperty(getSensorThingsService());
+        LocationUtils.linkOrCreateUnknownLocation(getSensorThingsService());
+        ThingUtils.linkOrCreateUnknownThing(getSensorThingsService());
     }
 
     @Override
