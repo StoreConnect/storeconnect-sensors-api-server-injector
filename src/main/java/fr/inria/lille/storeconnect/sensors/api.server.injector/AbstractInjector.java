@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Base class for any {@link Injector}
@@ -44,8 +45,15 @@ public abstract class AbstractInjector<T> implements Injector<T> {
     public void run() {
         try {
             LOGGER.info("Starting {}", this);
+            LOGGER.info("Preparing environment...");
             initEnvironment();
-            inject(parse(input));
+            LOGGER.info("Preparing environment... Done.");
+            LOGGER.info("Parsing input file...");
+            final List<T> data = parse(input);
+            LOGGER.info("Parsing input file... Done.");
+            LOGGER.info("Injecting data...");
+            inject(data);
+            LOGGER.info("Injecting data... Done.");
             LOGGER.info("Injection process done for {}", this);
         } catch (final ServiceFailureException | IOException e) {
             LOGGER.error("Unexpected failure for {}", this, e);

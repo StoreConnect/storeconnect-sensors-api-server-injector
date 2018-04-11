@@ -21,9 +21,9 @@ Hereafter the list of available data types
 
 ### `insiteo`
 
-File as to follow the Insiteo sensor observation's result format. 
+When using the `insiteo` data type, input file has to follow the Insiteo sensor observation's format.
 
-Example of Insiteo sensor observation's result format:
+An example of the Insiteo sensor observation's format is given bellow:
 
 ```json
 [

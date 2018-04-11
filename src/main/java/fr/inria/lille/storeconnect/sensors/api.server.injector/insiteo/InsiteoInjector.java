@@ -73,7 +73,7 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
     protected static DataArrayValue toDataArrayValue(final Map.Entry<Datastream, List<InsiteoObservation>> entry) {
         return entry.getValue()
                 .stream()
-                .peek(insiteoObservation -> LOGGER.info("Processing {}", insiteoObservation))
+                .peek(insiteoObservation -> LOGGER.info("Processing of {}", insiteoObservation))
                 .reduce(
                         newDataArrayValue(entry.getKey()),
                         (acc, insiteoObservation) -> {
@@ -176,6 +176,7 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
 
     @Override
     public void inject(final List<InsiteoObservation> data) throws ServiceFailureException {
+        LOGGER.info("Preparing Insiteo's observations for sending...");
         final DataArrayDocument insiteoObservations = toDatastreams(data)
                 .entrySet()
                 .stream()
@@ -193,10 +194,11 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
                             return merge;
                         }
                 );
+        LOGGER.info("Preparing Insiteo's observations for sending... Done.");
 
-        LOGGER.info("Creating InsiteoObservations...");
+        LOGGER.info("Sending InsiteoObservations to server...");
         getSensorThingsService().create(insiteoObservations);
-        LOGGER.info("Creating InsiteoObservations... Done.");
+        LOGGER.info("Sending InsiteoObservations to server... Done.");
     }
 
     protected Map<Datastream, List<InsiteoObservation>> toDatastreams(final List<InsiteoObservation> data) {
