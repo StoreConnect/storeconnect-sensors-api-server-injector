@@ -44,7 +44,7 @@ public final class AppUserIdBuilder extends AbstractBuilder<AppUserId> {
     }
 
     public AppUserIdBuilder sequence(final String sequence) {
-        getBuildingInstance().setSensor(sequence);
+        getBuildingInstance().setSequence(sequence);
         return this;
     }
 
