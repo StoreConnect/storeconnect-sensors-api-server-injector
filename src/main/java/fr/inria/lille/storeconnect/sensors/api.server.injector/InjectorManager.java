@@ -22,6 +22,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -68,6 +69,10 @@ public final class InjectorManager {
 
     private void startInjector(final Injector<?> injector) {
         injectorsExecutionPool.execute(injector);
+    }
+
+    public Set<String> getHandledInjectorNames() {
+        return injectors.keySet();
     }
 
     public void awaitTermination(final long timeout, final TimeUnit timeUnit) throws InterruptedException {

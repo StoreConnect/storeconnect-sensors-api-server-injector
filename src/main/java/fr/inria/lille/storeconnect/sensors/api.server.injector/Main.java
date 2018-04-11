@@ -15,6 +15,7 @@
  */
 package fr.inria.lille.storeconnect.sensors.api.server.injector;
 
+import com.beust.jcommander.IValueValidator;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
@@ -39,12 +40,6 @@ public class Main {
 
     public static void main(final String[] argv) {
         final Args args = parseArgs(argv);
-
-        if (!InjectorManager.getInstance().canHandle(args.getDataType())) {
-            LOGGER.error("Unable to handle data type {}. Available data types: insiteo.", args.getDataType());
-            System.exit(1);
-        }
-
         try {
             InjectorManager.getInstance().handle(
                     args.getDataType(),
@@ -68,6 +63,7 @@ public class Main {
         try {
             jCommander.parse(argv);
         } catch (final ParameterException e) {
+            JCommander.getConsole().println("Bad command line usage: " + e.getMessage());
             jCommander.usage();
             System.exit(1);
         }
@@ -81,13 +77,13 @@ public class Main {
      */
     private static class Args {
 
-        @Parameter(names = {"-i", "--input"}, description = "URL to the file containing data to inject to the StoreConnect Sensos API's server", required = true)
+        @Parameter(names = {"-i", "--input"}, description = "URL to the file containing data to inject to the StoreConnect Sensor API's server", required = true)
         private URL fileInputPath;
 
         @Parameter(names = {"-e", "--endpoint"}, description = "Endpoint URL to the StoreConnect Sensors API's server", required = true)
         private URL endpoint;
 
-        @Parameter(names = {"-t", "--type"}, description = "The type of data to inject. Available data types: insiteo", required = true)
+        @Parameter(names = {"-t", "--type"}, description = "The type of data to inject", validateValueWith = DataTypeValueValidator.class, required = true)
         private String dataType;
 
         public URL getFileInputPath() {
@@ -100,6 +96,19 @@ public class Main {
 
         public String getDataType() {
             return dataType;
+        }
+
+        public static class DataTypeValueValidator implements IValueValidator<String> {
+            @Override
+            public void validate(final String name, final String value) {
+                if (!InjectorManager.getInstance().canHandle(value)) {
+                    throw new ParameterException(String.format(
+                            "Unable to handle data type %s. Available data types: %s.",
+                            value,
+                            InjectorManager.getInstance().getHandledInjectorNames()
+                    ));
+                }
+            }
         }
 
     }
