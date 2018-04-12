@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import de.fraunhofer.iosb.ilt.sta.ServiceFailureException;
 import de.fraunhofer.iosb.ilt.sta.jackson.ObjectMapperFactory;
 import de.fraunhofer.iosb.ilt.sta.model.Datastream;
+import de.fraunhofer.iosb.ilt.sta.model.FeatureOfInterest;
 import de.fraunhofer.iosb.ilt.sta.model.Observation;
 import de.fraunhofer.iosb.ilt.sta.model.Sensor;
 import de.fraunhofer.iosb.ilt.sta.model.TimeObject;
@@ -30,6 +31,7 @@ import de.fraunhofer.iosb.ilt.sta.model.ext.EntityList;
 import de.fraunhofer.iosb.ilt.sta.service.SensorThingsService;
 import fr.inria.lille.storeconnect.sensors.api.client.model.ObservedProperties;
 import fr.inria.lille.storeconnect.sensors.api.client.model.builder.DatastreamBuilder;
+import fr.inria.lille.storeconnect.sensors.api.client.model.builder.FeatureOfInterestBuilder;
 import fr.inria.lille.storeconnect.sensors.api.client.model.feature.builder.PointFeatureBuilder;
 import fr.inria.lille.storeconnect.sensors.api.client.model.motion.FeatureProperty;
 import fr.inria.lille.storeconnect.sensors.api.client.model.motion.builder.MotionEventBuilder;
@@ -69,51 +71,6 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
         super(input, sensorThingsService);
     }
 
-    protected static DataArrayValue toDataArrayValue(final Map.Entry<Datastream, List<InsiteoObservation>> entry) {
-        return entry.getValue()
-                .stream()
-                .reduce(
-                        newDataArrayValue(entry.getKey()),
-                        (acc, insiteoObservation) -> {
-                            acc.addObservation(newObservation(insiteoObservation));
-                            return acc;
-                        },
-                        (dataArrayValue1, dataArrayValue2) -> {
-                            dataArrayValue2.getObservations().forEach(dataArrayValue1::addObservation);
-                            return dataArrayValue1;
-                        }
-                );
-    }
-
-    protected static DataArrayValue newDataArrayValue(final Datastream datastream) {
-        return new DataArrayValue(
-                datastream,
-                new HashSet<>(Arrays.asList(
-                        DataArrayValue.Property.Result,
-                        DataArrayValue.Property.PhenomenonTime
-                ))
-        );
-    }
-
-    protected static Observation newObservation(final InsiteoObservation insiteoObservation) {
-        return MotionObservationBuilder.builder()
-                .result(MotionEventBuilder.builder()
-                        .subject(MotionSubjectBuilder.builder()
-                                .id(String.format("%s-%d", insiteoObservation.getAppUserId().getSequence(), insiteoObservation.getAppUserId().getId()))
-                                .build()
-                        )
-                        .location(PointFeatureBuilder.builder()
-                                .geometry(new Point(new LngLatAlt(insiteoObservation.getLat(), insiteoObservation.getLon())))
-                                .property(FeatureProperty.BUILDING, insiteoObservation.getBuilding())
-                                .property(FeatureProperty.FLOOR, insiteoObservation.getFloor())
-                                .build()
-                        )
-                        .build()
-                )
-                .phenomenonTime(new TimeObject(insiteoObservation.getDeviceDate().atZone(ZoneId.systemDefault()))) // TODO make it configurable
-                .build();
-    }
-
     @Override
     public void initEnvironment() throws ServiceFailureException {
         ObservedPropertyUtils.linkOrCreateMotionObservedProperty(getSensorThingsService());
@@ -133,7 +90,7 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
         final DataArrayDocument insiteoObservations = toDatastreams(data)
                 .entrySet()
                 .stream()
-                .map(InsiteoInjector::toDataArrayValue)
+                .map(this::toDataArrayValue)
                 .reduce(
                         new DataArrayDocument(),
                         (acc, dataArrayValue) -> {
@@ -221,6 +178,85 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
         getSensorThingsService().create(newAssociatedSensor);
         LOGGER.debug("Creating new Sensor {}... Done.", newAssociatedSensor);
         return newAssociatedSensor;
+    }
+
+    protected DataArrayValue toDataArrayValue(final Map.Entry<Datastream, List<InsiteoObservation>> entry) {
+        return entry.getValue()
+                .stream()
+                .reduce(
+                        newDataArrayValue(entry.getKey()),
+                        (acc, insiteoObservation) -> {
+                            try {
+                                acc.addObservation(newObservation(insiteoObservation));
+                            } catch (final ServiceFailureException e) {
+                                throw new IllegalStateException(e);
+                            }
+                            return acc;
+                        },
+                        (dataArrayValue1, dataArrayValue2) -> {
+                            dataArrayValue2.getObservations().forEach(dataArrayValue1::addObservation);
+                            return dataArrayValue1;
+                        }
+                );
+    }
+
+    protected static DataArrayValue newDataArrayValue(final Datastream datastream) {
+        return new DataArrayValue(
+                datastream,
+                new HashSet<>(Arrays.asList(
+                        DataArrayValue.Property.Result,
+                        DataArrayValue.Property.PhenomenonTime,
+                        DataArrayValue.Property.FeatureOfInterest
+                ))
+        );
+    }
+
+    protected Observation newObservation(final InsiteoObservation insiteoObservation) throws ServiceFailureException {
+        return MotionObservationBuilder.builder()
+                .result(MotionEventBuilder.builder()
+                        .subject(MotionSubjectBuilder.builder()
+                                .id(String.format("%s-%d", insiteoObservation.getAppUserId().getSequence(), insiteoObservation.getAppUserId().getId()))
+                                .build()
+                        )
+                        .location(PointFeatureBuilder.builder()
+                                .geometry(new Point(new LngLatAlt(insiteoObservation.getLat(), insiteoObservation.getLon())))
+                                .property(FeatureProperty.BUILDING, insiteoObservation.getBuilding())
+                                .property(FeatureProperty.FLOOR, insiteoObservation.getFloor())
+                                .build()
+                        )
+                        .build()
+                )
+                .featureOfInterest(getOrCreateAssociatedFeatureOfInterest(insiteoObservation))
+                .phenomenonTime(new TimeObject(insiteoObservation.getDeviceDate().atZone(ZoneId.systemDefault()))) // TODO make it configurable
+                .build();
+    }
+
+    protected FeatureOfInterest getOrCreateAssociatedFeatureOfInterest(final InsiteoObservation insiteoObservation) throws ServiceFailureException {
+        // Search the Sensor associated to the given InsiteoObservation
+        final EntityList<FeatureOfInterest> featureOfInterests = getSensorThingsService().featuresOfInterest()
+                .query()
+                .filter(String.format("feature/properties/%s eq %d", FeatureProperty.VENUE_ID.getName(), insiteoObservation.getVenueId()))
+                .list();
+
+        // If found, then returns it
+        if (!featureOfInterests.isEmpty()) {
+            return featureOfInterests.iterator().next();
+        }
+        // Else, create it
+        final FeatureOfInterest newAssociatedFeatureOfInterest = FeatureOfInterestBuilder.builder()
+                .name(String.valueOf(insiteoObservation.getVenueId()))
+                .description("Dummy place for venueId " + insiteoObservation.getVenueId())
+                .feature(
+                        PointFeatureBuilder.builder()
+                                .geometry(new Point(new LngLatAlt(0.0, 0.0)))
+                                .property(FeatureProperty.VENUE_ID, insiteoObservation.getVenueId())
+                                .build()
+                )
+                .build();
+        LOGGER.debug("Creating new FeatureOfInterest {}...", newAssociatedFeatureOfInterest);
+        getSensorThingsService().create(newAssociatedFeatureOfInterest);
+        LOGGER.debug("Creating new FeatureOfInterest {}... Done.", newAssociatedFeatureOfInterest);
+        return newAssociatedFeatureOfInterest;
     }
 
 }

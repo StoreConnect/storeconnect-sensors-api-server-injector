@@ -16,11 +16,9 @@
 package fr.inria.lille.storeconnect.sensors.api.server.injector.util;
 
 import de.fraunhofer.iosb.ilt.sta.ServiceFailureException;
-import de.fraunhofer.iosb.ilt.sta.model.Location;
 import de.fraunhofer.iosb.ilt.sta.model.Thing;
 import de.fraunhofer.iosb.ilt.sta.model.ext.EntityList;
 import de.fraunhofer.iosb.ilt.sta.service.SensorThingsService;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.model.Locations;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.model.Things;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
