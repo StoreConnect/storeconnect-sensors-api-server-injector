@@ -72,7 +72,6 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
     protected static DataArrayValue toDataArrayValue(final Map.Entry<Datastream, List<InsiteoObservation>> entry) {
         return entry.getValue()
                 .stream()
-                .peek(insiteoObservation -> LOGGER.info("Processing of {}", insiteoObservation))
                 .reduce(
                         newDataArrayValue(entry.getKey()),
                         (acc, insiteoObservation) -> {
@@ -148,11 +147,15 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
                             return merge;
                         }
                 );
-        LOGGER.info("Preparing Insiteo's observations for sending... Done.");
+        LOGGER.info("Preparing Insiteo's observations for sending... {} Insiteo's observations processed for {} Datastream{}.",
+                insiteoObservations.getObservations().size(),
+                insiteoObservations.getValue().size(),
+                insiteoObservations.getValue().size() > 1 ? "s" : ""
+        );
 
-        LOGGER.info("Sending InsiteoObservations to server...");
+        LOGGER.info("Sending Insiteo's observations to server...");
         getSensorThingsService().create(insiteoObservations);
-        LOGGER.info("Sending InsiteoObservations to server... Done.");
+        LOGGER.info("Sending Insiteo's observations to server... Done.");
     }
 
     protected Map<Datastream, List<InsiteoObservation>> toDatastreams(final List<InsiteoObservation> data) {
@@ -190,9 +193,9 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
                 .sensor(sensor)
                 .thing(Things.UNKNOWN)
                 .build();
-        LOGGER.info("Creating new Datastream {}...", newAssociatedDatastream);
+        LOGGER.debug("Creating new Datastream {}...", newAssociatedDatastream);
         getSensorThingsService().create(newAssociatedDatastream);
-        LOGGER.info("Creating new Datastream {}... Done.", newAssociatedDatastream);
+        LOGGER.debug("Creating new Datastream {}... Done.", newAssociatedDatastream);
         return newAssociatedDatastream;
     }
 
@@ -214,9 +217,9 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
                 .encodingType(AbstractSensorBuilder.ValueCode.PDF) // TODO make it configurable
                 .metadata(String.format("http://example.org/sensors/%s/jsonschema", insiteoObservation.getAppUserId().getSensor())) // TODO make it configurable
                 .build();
-        LOGGER.info("Creating new Sensor {}...", newAssociatedSensor);
+        LOGGER.debug("Creating new Sensor {}...", newAssociatedSensor);
         getSensorThingsService().create(newAssociatedSensor);
-        LOGGER.info("Creating new Sensor {}... Done.", newAssociatedSensor);
+        LOGGER.debug("Creating new Sensor {}... Done.", newAssociatedSensor);
         return newAssociatedSensor;
     }
 

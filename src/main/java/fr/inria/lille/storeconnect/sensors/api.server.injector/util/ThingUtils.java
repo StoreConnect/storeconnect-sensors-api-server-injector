@@ -45,7 +45,7 @@ public final class ThingUtils {
             LOGGER.info("Creating missing UNKNOWN Thing: {}... Done.", Things.UNKNOWN);
         } else {
             Things.UNKNOWN.setId(candidates.iterator().next().getId());
-            LOGGER.info("Linked to existing UNKNOWN Thing: {}", Things.UNKNOWN);
+            LOGGER.debug("Linked to existing UNKNOWN Thing: {}", Things.UNKNOWN);
         }
     }
 

@@ -43,7 +43,7 @@ public final class ObservedPropertyUtils {
             LOGGER.info("Creating missing MOTION ObservedProperty: {}... Done.", ObservedProperties.MOTION);
         } else {
             ObservedProperties.MOTION.setId(candidates.iterator().next().getId());
-            LOGGER.info("Linked to existing MOTION ObservedProperty: {}", ObservedProperties.MOTION);
+            LOGGER.debug("Linked to existing MOTION ObservedProperty: {}", ObservedProperties.MOTION);
         }
     }
 

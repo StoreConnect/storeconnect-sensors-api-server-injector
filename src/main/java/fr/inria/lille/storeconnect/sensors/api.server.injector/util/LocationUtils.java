@@ -43,7 +43,7 @@ public final class LocationUtils {
             LOGGER.info("Creating missing UNKNOWN Location: {}... Done.", Locations.UNKNOWN);
         } else {
             Locations.UNKNOWN.setId(candidates.iterator().next().getId());
-            LOGGER.info("Linked to existing UNKNOWN Location: {}", Locations.UNKNOWN);
+            LOGGER.debug("Linked to existing UNKNOWN Location: {}", Locations.UNKNOWN);
         }
     }
 
