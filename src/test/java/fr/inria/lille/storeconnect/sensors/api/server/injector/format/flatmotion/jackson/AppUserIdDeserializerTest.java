@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.jackson;
+package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.AppUserId;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.builder.AppUserIdBuilder;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.AppUserId;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.builder.AppUserIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

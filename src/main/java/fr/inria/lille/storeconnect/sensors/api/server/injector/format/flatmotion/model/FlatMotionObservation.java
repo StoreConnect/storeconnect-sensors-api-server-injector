@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model;
+package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,12 +24,12 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * Insiteo Observation structure
+ * The StoreConnect's flat-motion observation format
  *
  * @author Aurelien Bourdon
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class InsiteoObservation {
+public class FlatMotionObservation {
 
     @JsonProperty("appuserid")
     private AppUserId appUserId;
@@ -52,8 +52,8 @@ public class InsiteoObservation {
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (!(o instanceof InsiteoObservation)) return false;
-        final InsiteoObservation that = (InsiteoObservation) o;
+        if (!(o instanceof FlatMotionObservation)) return false;
+        final FlatMotionObservation that = (FlatMotionObservation) o;
         return Objects.equals(appUserId, that.appUserId) &&
                 Objects.equals(venueId, that.venueId) &&
                 Objects.equals(building, that.building) &&
@@ -66,7 +66,7 @@ public class InsiteoObservation {
 
     @Override
     public String toString() {
-        return "InsiteoObservation{" +
+        return "FlatMotionObservation{" +
                 "appUserId=" + appUserId +
                 ", venueId=" + venueId +
                 ", building=" + building +

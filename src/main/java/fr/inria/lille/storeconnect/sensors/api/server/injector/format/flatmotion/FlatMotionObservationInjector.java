@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo;
+package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import de.fraunhofer.iosb.ilt.sta.ServiceFailureException;
@@ -38,7 +38,7 @@ import fr.inria.lille.storeconnect.sensors.api.client.model.motion.builder.Motio
 import fr.inria.lille.storeconnect.sensors.api.client.model.motion.builder.MotionObservationBuilder;
 import fr.inria.lille.storeconnect.sensors.api.client.model.motion.builder.MotionSubjectBuilder;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.AbstractInjector;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.InsiteoObservation;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.FlatMotionObservation;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.model.Things;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.util.LocationUtils;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.util.ObservedPropertyUtils;
@@ -59,15 +59,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * An {@link fr.inria.lille.storeconnect.sensors.api.server.injector.Injector} of Insiteo sensor's observation
+ * A {@link FlatMotionObservation} {@link fr.inria.lille.storeconnect.sensors.api.server.injector.Injector}
  *
  * @author Aurelien Bourdon
  */
-public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
+public class FlatMotionObservationInjector extends AbstractInjector<FlatMotionObservation> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InsiteoInjector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FlatMotionObservationInjector.class);
 
-    public InsiteoInjector(final File input, final SensorThingsService sensorThingsService) {
+    public FlatMotionObservationInjector(final File input, final SensorThingsService sensorThingsService) {
         super(input, sensorThingsService);
     }
 
@@ -79,15 +79,15 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
     }
 
     @Override
-    public List<InsiteoObservation> parse(final File input) throws IOException {
-        return ObjectMapperFactory.get().readValue(input, new TypeReference<List<InsiteoObservation>>() {
+    public List<FlatMotionObservation> parse(final File input) throws IOException {
+        return ObjectMapperFactory.get().readValue(input, new TypeReference<List<FlatMotionObservation>>() {
         });
     }
 
     @Override
-    public void inject(final List<InsiteoObservation> data) throws ServiceFailureException {
-        LOGGER.info("Preparing Insiteo's observations for sending...");
-        final DataArrayDocument insiteoObservations = toDatastreams(data)
+    public void inject(final List<FlatMotionObservation> data) throws ServiceFailureException {
+        LOGGER.info("Preparing flat-motion observations for sending...");
+        final DataArrayDocument flatMotionObservations = toDatastreams(data)
                 .entrySet()
                 .stream()
                 .map(this::toDataArrayValue)
@@ -104,23 +104,23 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
                             return merge;
                         }
                 );
-        LOGGER.info("Preparing Insiteo's observations for sending... {} Insiteo's observations processed for {} Datastream{}.",
-                insiteoObservations.getObservations().size(),
-                insiteoObservations.getValue().size(),
-                insiteoObservations.getValue().size() > 1 ? "s" : ""
+        LOGGER.info("Preparing flat-motion observations for sending... {} flat-motion observations processed for {} Datastream{}.",
+                flatMotionObservations.getObservations().size(),
+                flatMotionObservations.getValue().size(),
+                flatMotionObservations.getValue().size() > 1 ? "s" : ""
         );
 
-        LOGGER.info("Sending Insiteo's observations to server...");
-        getSensorThingsService().create(insiteoObservations);
-        LOGGER.info("Sending Insiteo's observations to server... Done.");
+        LOGGER.info("Sending flat-motion observations to server...");
+        getSensorThingsService().create(flatMotionObservations);
+        LOGGER.info("Sending flat-motion observations to server... Done.");
     }
 
-    protected Map<Datastream, List<InsiteoObservation>> toDatastreams(final List<InsiteoObservation> data) {
+    protected Map<Datastream, List<FlatMotionObservation>> toDatastreams(final List<FlatMotionObservation> data) {
         return data.stream()
                 .collect(Collectors.toMap(
-                        insiteoObservation -> {
+                        flatMotionObservation -> {
                             try {
-                                return getOrCreateAssociatedDatastream(getOrCreateAssociatedSensor(insiteoObservation));
+                                return getOrCreateAssociatedDatastream(getOrCreateAssociatedSensor(flatMotionObservation));
                             } catch (ServiceFailureException e) {
                                 throw new IllegalStateException(e);
                             }
@@ -156,11 +156,11 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
         return newAssociatedDatastream;
     }
 
-    protected Sensor getOrCreateAssociatedSensor(final InsiteoObservation insiteoObservation) throws ServiceFailureException {
-        // Search the Sensor associated to the given InsiteoObservation
+    protected Sensor getOrCreateAssociatedSensor(final FlatMotionObservation flatMotionObservation) throws ServiceFailureException {
+        // Search the Sensor associated to the given FlatMotionObservation
         final EntityList<Sensor> sensors = getSensorThingsService().sensors()
                 .query()
-                .filter(String.format("name eq '%s'", insiteoObservation.getAppUserId().getSensor()))
+                .filter(String.format("name eq '%s'", flatMotionObservation.getAppUserId().getSensor()))
                 .list();
 
         // If found, then returns it
@@ -169,10 +169,10 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
         }
         // Else, create it
         final Sensor newAssociatedSensor = SensorBuilder.builder()
-                .name(insiteoObservation.getAppUserId().getSensor())
-                .description(insiteoObservation.getAppUserId().getSensor())
+                .name(flatMotionObservation.getAppUserId().getSensor())
+                .description(flatMotionObservation.getAppUserId().getSensor())
                 .encodingType(AbstractSensorBuilder.ValueCode.PDF) // TODO make it configurable
-                .metadata(String.format("http://example.org/sensors/%s/jsonschema", insiteoObservation.getAppUserId().getSensor())) // TODO make it configurable
+                .metadata(String.format("http://example.org/sensors/%s/jsonschema", flatMotionObservation.getAppUserId().getSensor())) // TODO make it configurable
                 .build();
         LOGGER.debug("Creating new Sensor {}...", newAssociatedSensor);
         getSensorThingsService().create(newAssociatedSensor);
@@ -180,14 +180,14 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
         return newAssociatedSensor;
     }
 
-    protected DataArrayValue toDataArrayValue(final Map.Entry<Datastream, List<InsiteoObservation>> entry) {
+    protected DataArrayValue toDataArrayValue(final Map.Entry<Datastream, List<FlatMotionObservation>> entry) {
         return entry.getValue()
                 .stream()
                 .reduce(
                         newDataArrayValue(entry.getKey()),
-                        (acc, insiteoObservation) -> {
+                        (acc, flatMotionObservation) -> {
                             try {
-                                acc.addObservation(newObservation(insiteoObservation));
+                                acc.addObservation(newObservation(flatMotionObservation));
                             } catch (final ServiceFailureException e) {
                                 throw new IllegalStateException(e);
                             }
@@ -211,31 +211,31 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
         );
     }
 
-    protected Observation newObservation(final InsiteoObservation insiteoObservation) throws ServiceFailureException {
+    protected Observation newObservation(final FlatMotionObservation flatMotionObservation) throws ServiceFailureException {
         return MotionObservationBuilder.builder()
                 .result(MotionEventBuilder.builder()
                         .subject(MotionSubjectBuilder.builder()
-                                .id(String.format("%s-%d", insiteoObservation.getAppUserId().getSequence(), insiteoObservation.getAppUserId().getId()))
+                                .id(String.format("%s-%d", flatMotionObservation.getAppUserId().getSequence(), flatMotionObservation.getAppUserId().getId()))
                                 .build()
                         )
                         .location(PointFeatureBuilder.builder()
-                                .geometry(new Point(new LngLatAlt(insiteoObservation.getLat(), insiteoObservation.getLon())))
-                                .property(FeatureProperty.BUILDING, insiteoObservation.getBuilding())
-                                .property(FeatureProperty.FLOOR, insiteoObservation.getFloor())
+                                .geometry(new Point(new LngLatAlt(flatMotionObservation.getLat(), flatMotionObservation.getLon())))
+                                .property(FeatureProperty.BUILDING, flatMotionObservation.getBuilding())
+                                .property(FeatureProperty.FLOOR, flatMotionObservation.getFloor())
                                 .build()
                         )
                         .build()
                 )
-                .featureOfInterest(getOrCreateAssociatedFeatureOfInterest(insiteoObservation))
-                .phenomenonTime(new TimeObject(insiteoObservation.getDeviceDate().atZone(ZoneId.systemDefault()))) // TODO make it configurable
+                .featureOfInterest(getOrCreateAssociatedFeatureOfInterest(flatMotionObservation))
+                .phenomenonTime(new TimeObject(flatMotionObservation.getDeviceDate().atZone(ZoneId.systemDefault()))) // TODO make it configurable
                 .build();
     }
 
-    protected FeatureOfInterest getOrCreateAssociatedFeatureOfInterest(final InsiteoObservation insiteoObservation) throws ServiceFailureException {
-        // Search the Sensor associated to the given InsiteoObservation
+    protected FeatureOfInterest getOrCreateAssociatedFeatureOfInterest(final FlatMotionObservation flatMotionObservation) throws ServiceFailureException {
+        // Search the FeatureOfInterest associated to the given FlatMotionObservation
         final EntityList<FeatureOfInterest> featureOfInterests = getSensorThingsService().featuresOfInterest()
                 .query()
-                .filter(String.format("feature/properties/%s eq %d", FeatureProperty.VENUE_ID.getName(), insiteoObservation.getVenueId()))
+                .filter(String.format("feature/properties/%s eq %d", FeatureProperty.VENUE_ID.getName(), flatMotionObservation.getVenueId()))
                 .list();
 
         // If found, then returns it
@@ -244,12 +244,12 @@ public class InsiteoInjector extends AbstractInjector<InsiteoObservation> {
         }
         // Else, create it
         final FeatureOfInterest newAssociatedFeatureOfInterest = FeatureOfInterestBuilder.builder()
-                .name(String.valueOf(insiteoObservation.getVenueId()))
-                .description("Dummy place for venueId " + insiteoObservation.getVenueId())
+                .name(String.valueOf(flatMotionObservation.getVenueId()))
+                .description("Dummy place for venueId " + flatMotionObservation.getVenueId())
                 .feature(
                         PointFeatureBuilder.builder()
                                 .geometry(new Point(new LngLatAlt(0.0, 0.0)))
-                                .property(FeatureProperty.VENUE_ID, insiteoObservation.getVenueId())
+                                .property(FeatureProperty.VENUE_ID, flatMotionObservation.getVenueId())
                                 .build()
                 )
                 .build();

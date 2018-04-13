@@ -13,7 +13,7 @@ $ mvn clean package
 $ java -jar target/storeconnect-sensors-api-server-injector-<VERSION>-jar-with-dependencies.jar \
     --enpoint http://storeconnect-sensors-api-server/SensorThingsService/1.0 \
     --input file:///path/to/the/data/file.json \
-    --type insiteo
+    --type flat-motion
 ```
 
 ## Available data types
@@ -22,11 +22,11 @@ The `-t` or `--type` is used to precise the type of the data to inject to the St
 
 Hereafter the list of available data types
 
-### `insiteo`
+### `flat-motion`
 
-When using the `insiteo` data type, input file has to follow the Insiteo sensor observation's format.
+When using the `flat-motion` data type, input file has to follow the StoreConnect's flat motion observation format.
 
-An example of the Insiteo sensor observation's format is given bellow:
+An example of the StoreConnect's flat motion observation format is given bellow:
 
 ```json
 [

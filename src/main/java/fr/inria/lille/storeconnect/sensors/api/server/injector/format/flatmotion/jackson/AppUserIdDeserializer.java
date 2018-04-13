@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.jackson;
+package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.AppUserId;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.builder.AppUserIdBuilder;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.AppUserId;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.builder.AppUserIdBuilder;
 import fr.inria.lille.storeconnect.sensors.injector.jackson.InvalidPatternException;
 
 import java.io.IOException;

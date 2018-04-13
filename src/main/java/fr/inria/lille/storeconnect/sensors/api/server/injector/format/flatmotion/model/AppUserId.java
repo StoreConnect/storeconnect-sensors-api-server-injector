@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model;
+package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.jackson.AppUserIdDeserializer;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.jackson.AppUserIdDeserializer;
 
 import java.util.Objects;
 
 /**
- * Specify the type of the Insiteo Observation's {@code appuserid} attribute
+ * Specify the type of the {@link FlatMotionObservation#appUserId}
  *
  * @author Aurelien Bourdon
  */

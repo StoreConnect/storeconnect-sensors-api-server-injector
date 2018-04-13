@@ -16,7 +16,7 @@
 package fr.inria.lille.storeconnect.sensors.api.server.injector;
 
 import de.fraunhofer.iosb.ilt.sta.service.SensorThingsService;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.InsiteoInjector;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.FlatMotionObservationInjector;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -37,7 +37,7 @@ public final class InjectorManager {
     private static final InjectorManager INSTANCE = new InjectorManager();
     private final Map<String, Class<? extends AbstractInjector<?>>> injectors = new HashMap<String, Class<? extends AbstractInjector<?>>>() {
         {
-            put("insiteo", InsiteoInjector.class);
+            put("flat-motion", FlatMotionObservationInjector.class);
         }
     };
     private final ExecutorService injectorsExecutionPool = Executors.newSingleThreadExecutor();

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model;
+package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

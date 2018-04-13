@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.builder;
+package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.builder;
 
 
 import de.fraunhofer.iosb.ilt.sta.model.builder.api.AbstractBuilder;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.AppUserId;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.AppUserId;
 
 /**
  * {@link AppUserId}'s {@link de.fraunhofer.iosb.ilt.sta.model.builder.api.Builder}

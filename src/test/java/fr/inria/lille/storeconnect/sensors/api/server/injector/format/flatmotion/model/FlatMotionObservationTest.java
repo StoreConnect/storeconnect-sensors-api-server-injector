@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model;
+package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model;
 
 import de.fraunhofer.iosb.ilt.sta.jackson.ObjectMapperFactory;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.builder.AppUserIdBuilder;
-import fr.inria.lille.storeconnect.sensors.api.server.injector.insiteo.model.builder.InsiteoObservationBuilder;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.builder.AppUserIdBuilder;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotion.model.builder.FlatMotionObservationBuilder;
 import fr.inria.lille.storeconnect.sensors.api.server.injector.util.ResourcesUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,18 +27,18 @@ import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("InsiteoObservation")
-public class InsiteoObservationTest {
+@DisplayName("FlatMotionObservation")
+public class FlatMotionObservationTest {
 
     @Test
-    @DisplayName("Insiteo deserialization with valid format")
+    @DisplayName("FlatMotionObservation can be deserialized with a valid format")
     public void testDeserializationWithValidFormat() throws IOException {
-        final InsiteoObservation insiteoObservation = ObjectMapperFactory.get().readValue(
-                ResourcesUtils.fromResources("insiteoObservation.json", getClass()),
-                InsiteoObservation.class
+        final FlatMotionObservation flatMotionObservation = ObjectMapperFactory.get().readValue(
+                ResourcesUtils.fromResources("flatMotionObservation.json", getClass()),
+                FlatMotionObservation.class
         );
         assertEquals(
-                InsiteoObservationBuilder.builder()
+                FlatMotionObservationBuilder.builder()
                         .appUserId(AppUserIdBuilder.builder()
                                 .sensor("Cam1")
                                 .sequence("T1")
@@ -52,8 +52,8 @@ public class InsiteoObservationTest {
                         .type(Type.LOCATION)
                         .venueId(95)
                         .build(),
-                insiteoObservation,
-                "An Insiteo deserialization must be deserialized with a valid format"
+                flatMotionObservation,
+                "A FlatMotionObservation must be deserialized with a valid format"
         );
     }
 
