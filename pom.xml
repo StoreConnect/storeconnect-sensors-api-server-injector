@@ -40,7 +40,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/StoreConnect/storeconnect-sensors-api-injector.git</connection>
-        <developerConnection>scm:git:https://github.com/StoreConnect/storeconnect-sensors-api-injector.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:StoreConnect/storeconnect-sensors-api-server-injector.git</developerConnection>
         <url>https://github.com/StoreConnect/storeconnect-sensors-api-injector</url>
     </scm>
 
@@ -67,7 +67,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Dependencies versions -->
-        <storeconnect-sensors-api-client.version>1.0-SNAPSHOT</storeconnect-sensors-api-client.version>
+        <storeconnect-sensors-api-client.version>0.2</storeconnect-sensors-api-client.version>
         <jcommander.version>1.72</jcommander.version>
         <slf4j-simple.version>1.7.25</slf4j-simple.version>
         <junit-platform-launcher.version>1.1.0</junit-platform-launcher.version>
@@ -75,6 +75,10 @@
         <junit-platform-surefire-provider.version>1.1.0</junit-platform-surefire-provider.version>
 
         <!-- Plugins versions -->
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
+        <maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
@@ -114,6 +118,22 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -175,6 +195,13 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven-deploy-plugin.version}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

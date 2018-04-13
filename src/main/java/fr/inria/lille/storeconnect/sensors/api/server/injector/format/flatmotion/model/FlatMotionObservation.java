@@ -18,7 +18,7 @@ package fr.inria.lille.storeconnect.sensors.api.server.injector.format.flatmotio
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import fr.inria.lille.storeconnect.sensors.injector.jackson.EpochTimestampDeserializer;
+import fr.inria.lille.storeconnect.sensors.api.server.injector.jackson.EpochTimestampDeserializer;
 
 import java.time.Instant;
 import java.util.Objects;
