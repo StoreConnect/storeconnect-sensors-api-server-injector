@@ -4,18 +4,32 @@ Simple utility tool to inject data to a [FUI StoreConnect Sensors API server](ht
 
 ## Prerequisites
 
-The [FUI StoreConnect Sensors API Client](https://github.com/StoreConnect/storeconnect-sensors-api-client) needs to be installed.
-
-## Example of use
+This project depends on the [FUI StoreConnect Sensors API client](https://github.com/StoreConnect/storeconnect-sensors-api-client) which is not yet available on [Maven Central](https://search.maven.org/). So it needs to be manually installed:
 
 ```bash
-$ mvn clean package
-$ java -jar target/storeconnect-sensors-api-server-injector-<VERSION>-jar-with-dependencies.jar \
-    --enpoint http://storeconnect-sensors-api-server/SensorThingsService/1.0 \
-    --input file:///path/to/the/data/file.json \
-    --type flat-motion
-```
+$ git clone https://github.com/StoreConnect/storeconnect-sensors-api-client.git
+$ cd storeconnect-sensors-api-client/
+$ git checkout storeconnect-sensors-api-client-0.2
+$ mvn install
+``` 
 
+## How to use it
+
+1. Build the package
+
+    ```bash
+    $ mvn clean package
+    ```
+    
+2. Execute the generated `target/storeconnect-sensors-api-server-injector-<VERSION>-jar-with-dependencies.jar` JAR file
+
+    ```
+    $ java -jar target/storeconnect-sensors-api-server-injector-<VERSION>-jar-with-dependencies.jar \
+        --enpoint <FUI STORECONNECT SENSORS API SERVER HOST URL>/SensorThingsService/1.0 \
+        --input <INPUT FILE URL> \
+        --type <DATA TYPE>
+    ```
+    
 ## Available data types
 
 The `-t` or `--type` is used to precise the type of the data to inject to the StoreConnect Sensor API's server.
