@@ -71,7 +71,7 @@ public class Main {
     }
 
     /**
-     * The Main program entry point arguments
+     * The Main program entry point's arguments
      *
      * @author Aurelien Bourdon
      */

@@ -4,7 +4,7 @@ Simple utility tool to inject data to a [FUI StoreConnect Sensors API server](ht
 
 ## Prerequisites
 
-This project depends on the [FUI StoreConnect Sensors API client](https://github.com/StoreConnect/storeconnect-sensors-api-client) which is not yet available on [Maven Central](https://search.maven.org/). So it needs to be manually installed:
+This project depends on the [FUI StoreConnect Sensors API client](https://github.com/StoreConnect/storeconnect-sensors-api-client) (0.2 version) which is not yet available on [Maven Central](https://search.maven.org/). So it needs to be manually installed:
 
 ```bash
 $ git clone https://github.com/StoreConnect/storeconnect-sensors-api-client.git
@@ -29,6 +29,12 @@ $ mvn install
         --input <INPUT FILE URL> \
         --type <DATA TYPE>
     ```
+    
+Where:
+- `<VERSION>` is the current FUI StoreConnect Sensors API server injector version
+- `<FUI STORECONNECT SENSORS API SERVER HOST URL>` is the host URL of the StoreConnect Sensors API Server
+- `<INPUT FILE URL>` is the **URL** of the input file that containing data to inject
+- `<DATA TYPE>` is the type of data to use to parse the `<INPUT FILE>` (see below for the list of [available data types](#available-data-types)) 
     
 ## Available data types
 
