@@ -18,7 +18,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.inria.lille.storeconnect.sensors.api.server.injector</groupId>
+    <groupId>com.github.storeconnect</groupId>
     <artifactId>storeconnect-sensors-api-server-injector</artifactId>
     <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -67,7 +67,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Dependencies versions -->
-        <storeconnect-sensors-api-client.version>0.2</storeconnect-sensors-api-client.version>
+        <storeconnect-sensors-api-client.version>0.3-SNAPSHOT</storeconnect-sensors-api-client.version>
         <jcommander.version>1.72</jcommander.version>
         <slf4j-simple.version>1.7.25</slf4j-simple.version>
         <junit-platform-launcher.version>1.1.0</junit-platform-launcher.version>
@@ -87,7 +87,7 @@
     <dependencies>
         <!-- Compile scope -->
         <dependency>
-            <groupId>fr.inria.lille.storeconnect.sensors.api</groupId>
+            <groupId>com.github.storeconnect</groupId>
             <artifactId>storeconnect-sensors-api-client</artifactId>
             <version>${storeconnect-sensors-api-client.version}</version>
         </dependency>
@@ -186,7 +186,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>fr.inria.lille.storeconnect.sensors.api.server.injector.Main</mainClass>
+                                    <mainClass>com.github.storeconnect.sensors.api.server.injector.Main</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
