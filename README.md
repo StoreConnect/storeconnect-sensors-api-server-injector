@@ -2,17 +2,6 @@
 
 Simple utility tool to inject data to a [FUI StoreConnect Sensors API server](https://github.com/StoreConnect/storeconnect-sensors-api-server)
 
-## Prerequisites
-
-This project depends on the [FUI StoreConnect Sensors API client](https://github.com/StoreConnect/storeconnect-sensors-api-client) (0.2 version) which is not yet available on [Maven Central](https://search.maven.org/). So it needs to be manually installed:
-
-```bash
-$ git clone https://github.com/StoreConnect/storeconnect-sensors-api-client.git
-$ cd storeconnect-sensors-api-client/
-$ git checkout storeconnect-sensors-api-client-0.2
-$ mvn install
-``` 
-
 ## How to use it
 
 1. Build the package
