@@ -4,26 +4,29 @@
 
 Simple utility tool to inject data to a [FUI StoreConnect Sensors API server](https://github.com/StoreConnect/storeconnect-sensors-api-server)
 
+## Requirements
+
+Have a [Java SE Runtime Environment 1.8+](http://www.oracle.com/technetwork/java/javase/downloads) installed.
+
 ## How to use it
 
-1. Build the package
+1. Download it
 
     ```bash
-    $ mvn clean package
+    $ wget -O storeconnect-sensors-api-server-injector.jar https://repo.maven.apache.org/maven2/com/github/storeconnect/storeconnect-sensors-api-server-injector/0.3/storeconnect-sensors-api-server-injector-0.3-jar-with-dependencies.jar
     ```
     
-2. Execute the generated `target/storeconnect-sensors-api-server-injector-<VERSION>-jar-with-dependencies.jar` JAR file
+2. Execute it
 
     ```
-    $ java -jar target/storeconnect-sensors-api-server-injector-<VERSION>-jar-with-dependencies.jar \
-        --enpoint <FUI STORECONNECT SENSORS API SERVER HOST URL>/SensorThingsService/1.0 \
+    $ java -jar storeconnect-sensors-api-server-injector.jar \
+        --enpoint <FUI STORECONNECT SENSORS API SERVER BASE URL>/SensorThingsService/1.0 \
         --input <INPUT FILE URL> \
         --type <DATA TYPE>
     ```
     
 Where:
-- `<VERSION>` is the current FUI StoreConnect Sensors API server injector version
-- `<FUI STORECONNECT SENSORS API SERVER HOST URL>` is the host URL of the StoreConnect Sensors API Server
+- `<FUI STORECONNECT SENSORS API SERVER BASE URL>` is the base URL of the StoreConnect Sensors API Server
 - `<INPUT FILE URL>` is the **URL** of the input file that containing data to inject
 - `<DATA TYPE>` is the type of data to use to parse the `<INPUT FILE>` (see below for the list of [available data types](#available-data-types)) 
     
