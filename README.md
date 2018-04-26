@@ -1,5 +1,7 @@
 # FUI StoreConnect Sensor API's server injector
 
+[![Build Status](https://travis-ci.org/StoreConnect/storeconnect-sensors-api-server-injector.svg?branch=master)](https://travis-ci.org/StoreConnect/storeconnect-sensors-api-server-injector)
+
 Simple utility tool to inject data to a [FUI StoreConnect Sensors API server](https://github.com/StoreConnect/storeconnect-sensors-api-server)
 
 ## How to use it
