@@ -33,7 +33,7 @@ public class Main {
         try {
             new Application(args).execute();
         } catch (final ParameterException e) {
-            // Nothing to display as it has already be done
+            // Nothing to display as it has already been done
             System.exit(ERROR_EXIT_STATUS);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
