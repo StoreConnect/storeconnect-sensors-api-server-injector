@@ -40,6 +40,7 @@ public final class InjectorManager {
             put("flat-motion", FlatMotionObservationInjector.class);
         }
     };
+    // Only one injection at a time
     private final ExecutorService injectorsExecutionPool = Executors.newSingleThreadExecutor();
 
     private InjectorManager() {

@@ -37,37 +37,46 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final String PROGRAM_NAME = "storeconnect-sensors-api-server-injector";
 
-    public static void main(final String[] argv) {
-        final Args args = parseArgs(argv);
+    public static void main(final String[] args) {
+        final Args parsedArgs = parseArgs(args);
         try {
+            // Inject data based on the user arguments
             InjectorManager.getInstance().handle(
-                    args.getDataType(),
-                    new File(URI.create(args.getFileInputPath().toString())),
-                    new SensorThingsService(args.getEndpoint())
+                    parsedArgs.getDataType(),
+                    new File(URI.create(parsedArgs.getFileInputPath().toString())),
+                    new SensorThingsService(parsedArgs.getEndpoint())
             );
-            // Wait long enough to complete all submitted tasks
+            // Wait long enough for injection completion
             InjectorManager.getInstance().awaitTermination(1, TimeUnit.DAYS);
         } catch (final URISyntaxException e) {
             LOGGER.error("Endpoint URI is not valid", e);
         } catch (final InterruptedException e) {
-            LOGGER.error("Cannot wait until all injectors finished", e);
+            LOGGER.error("Cannot wait until injector finished", e);
         }
     }
 
-    private static Args parseArgs(final String[] argv) {
-        final Args args = new Args();
+    /**
+     * Parse raw program arguments to generate the associated {@link Args}
+     *
+     * @param args the raw program arguments to parse
+     * @return a {@link Args} version of the raw program arguments
+     */
+    private static Args parseArgs(final String[] args) {
+        final Args parsedArgs = new Args();
         final JCommander jCommander = JCommander.newBuilder()
-                .addObject(args)
+                .addObject(parsedArgs)
                 .build();
+        jCommander.setProgramName(PROGRAM_NAME);
         try {
-            jCommander.parse(argv);
+            jCommander.parse(args);
         } catch (final ParameterException e) {
-            JCommander.getConsole().println("Bad command line usage: " + e.getMessage());
+            JCommander.getConsole().println("Command line error: " + e.getMessage());
             jCommander.usage();
             System.exit(1);
         }
-        return args;
+        return parsedArgs;
     }
 
     /**
@@ -98,6 +107,14 @@ public class Main {
             return dataType;
         }
 
+        /**
+         * {@link IValueValidator} for the {@link #dataType} argument.
+         * <p>
+         * Check if {@link #dataType} value can be handled by the {@link InjectorManager}
+         *
+         * @author Aurelien Bourdon
+         * @see {@link InjectorManager#canHandle(String)}
+         */
         public static class DataTypeValueValidator implements IValueValidator<String> {
             @Override
             public void validate(final String name, final String value) {
