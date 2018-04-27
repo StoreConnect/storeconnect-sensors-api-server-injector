@@ -13,7 +13,7 @@ Have a [Java SE Runtime Environment 1.8+](http://www.oracle.com/technetwork/java
 1. Download it
 
     ```bash
-    $ wget -O storeconnect-sensors-api-server-injector.jar https://repo.maven.apache.org/maven2/com/github/storeconnect/storeconnect-sensors-api-server-injector/0.3/storeconnect-sensors-api-server-injector-0.3-jar-with-dependencies.jar
+    $ wget -O storeconnect-sensors-api-server-injector.jar http://bit.ly/2KicPCg
     ```
     
 2. Execute it
