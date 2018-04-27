@@ -18,6 +18,7 @@ package com.github.storeconnect.sensors.api.server.injector.format.flatmotion.mo
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.storeconnect.sensors.api.server.injector.format.Format;
 import com.github.storeconnect.sensors.api.server.injector.jackson.EpochTimestampDeserializer;
 
 import java.time.Instant;
@@ -29,7 +30,7 @@ import java.util.Objects;
  * @author Aurelien Bourdon
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FlatMotionObservation {
+public class FlatMotionObservation implements Format {
 
     @JsonProperty("appuserid")
     private AppUserId appUserId;

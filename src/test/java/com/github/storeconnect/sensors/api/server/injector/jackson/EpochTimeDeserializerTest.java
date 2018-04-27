@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.storeconnect.sensors.api.server.injector.format.flatmotion.jackson;
+package com.github.storeconnect.sensors.api.server.injector.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.github.storeconnect.sensors.api.server.injector.jackson.EpochTimestampDeserializer;
 import de.fraunhofer.iosb.ilt.sta.jackson.ObjectMapperFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -41,8 +41,8 @@
         <connection>scm:git:https://github.com/StoreConnect/storeconnect-sensors-api-injector.git</connection>
         <developerConnection>scm:git:git@github.com:StoreConnect/storeconnect-sensors-api-server-injector.git</developerConnection>
         <url>https://github.com/StoreConnect/storeconnect-sensors-api-injector</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <organization>
         <name>Inria Lille</name>
@@ -66,6 +66,10 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <ossrh.url>https://oss.sonatype.org</ossrh.url>
+
+        <!-- Application's properties -->
+        <application.name>${project.name}</application.name>
+        <application.version>${project.version}</application.version>
 
         <!-- Dependencies versions -->
         <storeconnect-sensors-api-client.version>0.3</storeconnect-sensors-api-client.version>
@@ -121,6 +125,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -230,7 +240,7 @@
     <profiles>
         <profile>
             <!--
-                Configuration for a Maven Central compliant release.
+                InternalConfiguration for a Maven Central compliant release.
                 Automatically triggered when a release is being executed
             -->
             <id>release</id>

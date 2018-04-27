@@ -24,7 +24,7 @@ import com.github.storeconnect.sensors.api.client.model.motion.FeatureProperty;
 import com.github.storeconnect.sensors.api.client.model.motion.builder.MotionEventBuilder;
 import com.github.storeconnect.sensors.api.client.model.motion.builder.MotionObservationBuilder;
 import com.github.storeconnect.sensors.api.client.model.motion.builder.MotionSubjectBuilder;
-import com.github.storeconnect.sensors.api.server.injector.AbstractInjector;
+import com.github.storeconnect.sensors.api.server.injector.format.AbstractFormatInjector;
 import com.github.storeconnect.sensors.api.server.injector.format.flatmotion.model.FlatMotionObservation;
 import com.github.storeconnect.sensors.api.server.injector.model.Things;
 import com.github.storeconnect.sensors.api.server.injector.util.LocationUtils;
@@ -59,11 +59,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A {@link FlatMotionObservation} {@link com.github.storeconnect.sensors.api.server.injector.Injector}
+ * A {@link FlatMotionObservation} {@link com.github.storeconnect.sensors.api.server.injector.format.FormatInjector}
  *
  * @author Aurelien Bourdon
  */
-public class FlatMotionObservationInjector extends AbstractInjector<FlatMotionObservation> {
+public class FlatMotionObservationInjector extends AbstractFormatInjector<FlatMotionObservation> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FlatMotionObservationInjector.class);
 

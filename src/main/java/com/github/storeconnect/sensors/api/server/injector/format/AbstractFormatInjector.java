@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.storeconnect.sensors.api.server.injector;
+package com.github.storeconnect.sensors.api.server.injector.format;
 
 import de.fraunhofer.iosb.ilt.sta.ServiceFailureException;
 import de.fraunhofer.iosb.ilt.sta.service.SensorThingsService;
@@ -25,18 +25,18 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Base class for any {@link Injector}
+ * Base class for any {@link FormatInjector}
  *
- * @param <T> the type of data unit this {@link Injector} can handle
+ * @param <T> the type of data unit this {@link FormatInjector} can handle
  */
-public abstract class AbstractInjector<T> implements Injector<T> {
+public abstract class AbstractFormatInjector<T extends Format> implements FormatInjector<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractInjector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractFormatInjector.class);
 
     private final SensorThingsService sensorThingsService;
     private final File input;
 
-    public AbstractInjector(final File input, final SensorThingsService sensorThingsService) {
+    public AbstractFormatInjector(final File input, final SensorThingsService sensorThingsService) {
         this.sensorThingsService = sensorThingsService;
         this.input = input;
     }

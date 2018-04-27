@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.storeconnect.sensors.api.server.injector;
+package com.github.storeconnect.sensors.api.server.injector.format;
 
 import com.github.storeconnect.sensors.api.server.injector.format.flatmotion.FlatMotionObservationInjector;
 import de.fraunhofer.iosb.ilt.sta.service.SensorThingsService;
@@ -28,14 +28,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Manage all existing {@link Injector}s
+ * Manage all existing {@link FormatInjector}s
  *
  * @author Aurelien Bourdon
  */
-public final class InjectorManager {
+public final class FormatInjectorManager {
 
-    private static final InjectorManager INSTANCE = new InjectorManager();
-    private final Map<String, Class<? extends AbstractInjector<?>>> injectors = new HashMap<String, Class<? extends AbstractInjector<?>>>() {
+    private static final FormatInjectorManager INSTANCE = new FormatInjectorManager();
+    private final Map<String, Class<? extends AbstractFormatInjector<?>>> injectors = new HashMap<String, Class<? extends AbstractFormatInjector<?>>>() {
         {
             put("flat-motion", FlatMotionObservationInjector.class);
         }
@@ -43,21 +43,21 @@ public final class InjectorManager {
     // Only one injection at a time
     private final ExecutorService injectorsExecutionPool = Executors.newSingleThreadExecutor();
 
-    private InjectorManager() {
+    private FormatInjectorManager() {
     }
 
-    public static InjectorManager getInstance() {
+    public static FormatInjectorManager getInstance() {
         return INSTANCE;
     }
 
-    public void handle(final String injectorName, final File fileInput, final SensorThingsService sensorThingsService) {
-        if (!canHandle(injectorName)) {
-            throw new IllegalArgumentException("Unable to handle injector name " + injectorName);
+    public void handle(final String dataFormat, final File fileInput, final SensorThingsService sensorThingsService) {
+        if (!canHandle(dataFormat)) {
+            throw new IllegalArgumentException("Unable to handle format " + dataFormat);
         }
-        final Class<? extends AbstractInjector<?>> injectorClass = injectors.get(injectorName);
+        final Class<? extends AbstractFormatInjector<?>> injectorClass = injectors.get(dataFormat);
         try {
-            final Constructor<? extends AbstractInjector<?>> constructor = injectorClass.getDeclaredConstructor(File.class, SensorThingsService.class);
-            final Injector<?> injector = constructor.newInstance(fileInput, sensorThingsService);
+            final Constructor<? extends AbstractFormatInjector<?>> constructor = injectorClass.getDeclaredConstructor(File.class, SensorThingsService.class);
+            final FormatInjector<?> injector = constructor.newInstance(fileInput, sensorThingsService);
             startInjector(injector);
         } catch (final ReflectiveOperationException e) {
             throw new IllegalArgumentException(e);
@@ -68,7 +68,7 @@ public final class InjectorManager {
         return injectors.containsKey(injectorName);
     }
 
-    private void startInjector(final Injector<?> injector) {
+    private void startInjector(final FormatInjector<?> injector) {
         injectorsExecutionPool.execute(injector);
     }
 

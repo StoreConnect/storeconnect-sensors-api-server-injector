@@ -22,23 +22,23 @@ Have a [Java SE Runtime Environment 1.8+](http://www.oracle.com/technetwork/java
     $ java -jar storeconnect-sensors-api-server-injector.jar \
         --enpoint <FUI STORECONNECT SENSORS API SERVER BASE URL>/SensorThingsService/1.0 \
         --input <INPUT FILE URL> \
-        --type <DATA TYPE>
+        --data-format <DATA FORMAT>
     ```
     
 Where:
 - `<FUI STORECONNECT SENSORS API SERVER BASE URL>` is the base URL of the StoreConnect Sensors API Server
 - `<INPUT FILE URL>` is the **URL** of the input file that containing data to inject
-- `<DATA TYPE>` is the type of data to use to parse the `<INPUT FILE>` (see below for the list of [available data types](#available-data-types)) 
+- `<DATA FORMAT>` is the format of data to use to parse the `<INPUT FILE>` (see below for the list of [available data formats](#available-data-formats)) 
     
-## Available data types
+## Available data formats
 
-The `-t` or `--type` is used to precise the type of the data to inject to the StoreConnect Sensor API's server.
+The `-f` or `--data-format` is used to precise the format of the data to inject to the StoreConnect Sensor API's server.
 
-Hereafter the list of available data types
+Hereafter the list of available formats.
 
 ### `flat-motion`
 
-When using the `flat-motion` data type, input file has to follow the StoreConnect's flat motion observation format.
+When using the `flat-motion` format, input file has to follow the StoreConnect's flat motion observation format.
 
 An example of the StoreConnect's flat motion observation format is given bellow:
 

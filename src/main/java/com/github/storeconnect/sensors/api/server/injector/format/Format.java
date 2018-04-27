@@ -13,26 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.storeconnect.sensors.api.server.injector;
-
-import de.fraunhofer.iosb.ilt.sta.ServiceFailureException;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+package com.github.storeconnect.sensors.api.server.injector.format;
 
 /**
- * Base type for any injector
+ * The format of data handled by {@link FormatInjector}
  *
- * @param <T> the type of data unit this injector can handle
  * @author Aurelien Bourdon
  */
-public interface Injector<T> extends Runnable {
-
-    void initEnvironment() throws ServiceFailureException;
-
-    List<T> parse(File input) throws IOException;
-
-    void inject(List<T> data) throws ServiceFailureException;
-
+public interface Format {
 }
