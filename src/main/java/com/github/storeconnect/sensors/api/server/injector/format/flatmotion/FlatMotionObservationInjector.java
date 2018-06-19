@@ -134,8 +134,7 @@ public class FlatMotionObservationInjector extends AbstractFormatInjector<FlatMo
         // Search the Datastream associated to the given Sensor
         final EntityList<Datastream> candidates = getSensorThingsService().datastreams()
                 .query()
-                .filter(String.format("Sensor/id eq '%s'", sensor.getId()))
-                .filter(String.format("ObservedProperty/id eq '%s'", ObservedProperties.MOTION.getId()))
+                .filter(String.format("Sensor/id eq '%s' and ObservedProperty/id eq '%s'", sensor.getId(), ObservedProperties.MOTION.getId()))
                 .list();
 
         // If found, then returns it
