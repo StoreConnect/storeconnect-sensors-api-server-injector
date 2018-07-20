@@ -88,7 +88,7 @@ public class Application {
                     new File(URI.create(applicationArguments.getFileInputPath().toString())),
                     new SensorThingsService(applicationArguments.getEndpoint())
             );
-            // Wait long enough for injection completion
+            // Wait long enough for injection to complete
             FormatInjectorManager.getInstance().awaitTermination(1, TimeUnit.DAYS);
         } catch (final URISyntaxException e) {
             throw new IllegalArgumentException("Endpoint URI is not valid", e);

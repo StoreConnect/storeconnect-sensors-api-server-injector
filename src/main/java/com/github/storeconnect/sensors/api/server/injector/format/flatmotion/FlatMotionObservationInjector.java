@@ -27,6 +27,7 @@ import com.github.storeconnect.sensors.api.client.model.motion.builder.MotionSub
 import com.github.storeconnect.sensors.api.server.injector.format.AbstractFormatInjector;
 import com.github.storeconnect.sensors.api.server.injector.format.flatmotion.model.FlatMotionObservation;
 import com.github.storeconnect.sensors.api.server.injector.model.Things;
+import com.github.storeconnect.sensors.api.server.injector.model.UnitOfMeasurements;
 import com.github.storeconnect.sensors.api.server.injector.util.LocationUtils;
 import com.github.storeconnect.sensors.api.server.injector.util.ObservedPropertyUtils;
 import com.github.storeconnect.sensors.api.server.injector.util.ThingUtils;
@@ -42,6 +43,7 @@ import de.fraunhofer.iosb.ilt.sta.model.builder.api.AbstractSensorBuilder;
 import de.fraunhofer.iosb.ilt.sta.model.ext.DataArrayDocument;
 import de.fraunhofer.iosb.ilt.sta.model.ext.DataArrayValue;
 import de.fraunhofer.iosb.ilt.sta.model.ext.EntityList;
+import de.fraunhofer.iosb.ilt.sta.model.ext.UnitOfMeasurement;
 import de.fraunhofer.iosb.ilt.sta.service.SensorThingsService;
 import org.geojson.LngLatAlt;
 import org.geojson.Point;
@@ -146,6 +148,7 @@ public class FlatMotionObservationInjector extends AbstractFormatInjector<FlatMo
                 .name(sensor.getName())
                 .description(String.format("Human motions caught by Sensor '%s' ('%s')", sensor.getName(), sensor.getId()))
                 .observedProperty(ObservedProperties.MOTION)
+                .unitOfMeasurement(UnitOfMeasurements.UNKNOWN)
                 .sensor(sensor)
                 .thing(Things.UNKNOWN)
                 .build();

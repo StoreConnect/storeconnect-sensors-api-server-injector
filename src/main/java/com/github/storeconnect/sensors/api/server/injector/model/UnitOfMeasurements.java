@@ -15,25 +15,20 @@
  */
 package com.github.storeconnect.sensors.api.server.injector.model;
 
-import com.github.storeconnect.sensors.api.client.model.builder.LocationBuilder;
-import com.github.storeconnect.sensors.api.client.model.feature.builder.PointFeatureBuilder;
-import de.fraunhofer.iosb.ilt.sta.model.Location;
-import org.geojson.LngLatAlt;
-import org.geojson.Point;
+import de.fraunhofer.iosb.ilt.sta.model.builder.ext.UnitOfMeasurementBuilder;
+import de.fraunhofer.iosb.ilt.sta.model.ext.UnitOfMeasurement;
 
 /**
- * Default {@link Location} instances
+ * Default {@link UnitOfMeasurement} instances
  *
  * @author Aurelien Bourdon
  */
-public final class Locations {
+public final class UnitOfMeasurements {
 
-    public static final Location UNKNOWN = LocationBuilder.builder()
-            .name("Unknown")
-            .description("Represents an unknown place, when a location cannot be given")
-            .location(PointFeatureBuilder.builder()
-                    .geometry(new Point(new LngLatAlt(0.0, 0.0)))
-                    .build())
+    public static final UnitOfMeasurement UNKNOWN = UnitOfMeasurementBuilder.builder()
+            .name(null)
+            .symbol(null)
+            .definition(null)
             .build();
 
 }
